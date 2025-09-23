@@ -1,0 +1,115 @@
+:root {
+    color-scheme: light dark;
+    font-family: "Pretendard", "AppleSDGothicNeo", "Segoe UI", sans-serif;
+    background-color: #f7f4ef;
+    color: #2f2a1f;
+    line-height: 1.6;
+    font-size: 17px;
+    text-size-adjust: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+main {
+    margin: 0 auto;
+    max-width: 720px;
+    padding: 48px 24px 64px;
+}
+
+header {
+    margin-bottom: 32px;
+}
+
+header h1 {
+    font-size: 32px;
+    margin: 0 0 8px;
+}
+
+header p {
+    margin: 0;
+    color: #5f5644;
+}
+
+.note-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 0;
+    list-style: none;
+}
+
+.note-list a {
+    display: block;
+    padding: 16px;
+    border: 1px solid #d8d1c3;
+    border-radius: 8px;
+    text-decoration: none;
+    color: inherit;
+    background-color: rgba(255, 255, 255, 0.65);
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.note-list a:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.note-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #6b604c;
+}
+
+.note-title {
+    font-size: 20px;
+    margin: 8px 0 0;
+}
+
+.note-description {
+    margin: 8px 0 0;
+    color: #4b4334;
+}
+
+.note-page main {
+    max-width: 680px;
+}
+
+.note-page h1 {
+    font-size: 36px;
+    margin-bottom: 24px;
+}
+
+.note-page section + section {
+    margin-top: 24px;
+}
+
+.note-nav {
+    margin-top: 48px;
+}
+
+.note-nav a {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 2px;
+}
+
+footer {
+    margin-top: 56px;
+    color: #6b604c;
+    font-size: 14px;
+}
+
+@media (max-width: 600px) {
+    main {
+        padding: 32px 16px 48px;
+    }
+
+    header h1 {
+        font-size: 28px;
+    }
+}

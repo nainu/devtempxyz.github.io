@@ -1,18 +1,85 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>devtemp.xyz</title>
+    <title>Daily Notes</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
-    <h1>Hello World</h1>
+    <main>
+        <header>
+            <h1>데일리 노트</h1>
+            <p>하루 단위로 느낀 점과 배운 것들을 간단히 기록하세요.</p>
+        </header>
 
-    CF 테스트 용으로 구매한 도메인으로 만든 페이지입니다.
+        <section>
+            <h2>최근 노트</h2>
+            <ul id="note-list" class="note-list" aria-live="polite"></ul>
+            <p id="empty-message" hidden>아직 노트가 없습니다. <code>notes/</code> 폴더에 새 파일을 추가해 주세요.</p>
+        </section>
 
-    <p>아무 내용도 없으니 다들 돌아가 주세요</p>
+        <section>
+            <h2>업데이트 방법</h2>
+            <ol>
+                <li><code>notes</code> 폴더에 <code>YYYY-MM-DD.html</code> 형태의 파일을 복사해 내용을 작성합니다.</li>
+                <li><code>notes/list.json</code>에 새 항목을 추가합니다. 날짜 역순으로 정렬하면 최신 노트가 위에 표시됩니다.</li>
+                <li>필요할 때 <code>styles.css</code>를 수정하여 스타일을 다듬습니다.</li>
+            </ol>
+        </section>
+
+        <footer>
+            언제든 파일을 직접 수정하여 내용을 업데이트할 수 있습니다.
+        </footer>
+    </main>
+
+    <script>
+        async function loadNotes() {
+            const listElement = document.querySelector('#note-list');
+            const emptyMessage = document.querySelector('#empty-message');
+
+            try {
+                const response = await fetch('notes/list.json?_=' + Date.now());
+                if (!response.ok) throw new Error('failed to fetch');
+
+                const notes = await response.json();
+                if (!Array.isArray(notes) || notes.length === 0) {
+                    emptyMessage.hidden = false;
+                    return;
+                }
+
+                notes.forEach(note => {
+                    const item = document.createElement('li');
+                    const link = document.createElement('a');
+                    link.href = `notes/${note.path}`;
+
+                    const meta = document.createElement('div');
+                    meta.className = 'note-meta';
+                    meta.innerHTML = `<span>${note.date}</span><span>${note.title ?? ''}</span>`;
+
+                    const title = document.createElement('div');
+                    title.className = 'note-title';
+                    title.textContent = note.title || note.date;
+
+                    const description = document.createElement('p');
+                    description.className = 'note-description';
+                    description.textContent = note.summary || '';
+
+                    link.appendChild(meta);
+                    link.appendChild(title);
+                    if (note.summary) {
+                        link.appendChild(description);
+                    }
+                    item.appendChild(link);
+                    listElement.appendChild(item);
+                });
+            } catch (error) {
+                emptyMessage.hidden = false;
+                emptyMessage.textContent = '노트 목록을 불러오지 못했습니다. list.json을 확인해 주세요.';
+            }
+        }
+
+        loadNotes();
+    </script>
 </body>
-
 </html>
