@@ -1,16 +1,18 @@
-# The URL the site will be built for
-base_url = "https://example.com"
+# Site metadata
+base_url = "https://devtemp.xyz"
+title = "devtemp.xyz"
+description = "Static site for devtemp.xyz powered by Zola"
 
-# Whether to automatically compile all Sass files in the sass directory
+# Asset compilation
 compile_sass = true
 
-# Whether to build a search index to be used later on by a JavaScript library
+# Optional features
 build_search_index = false
 
 [markdown]
-# Whether to do syntax highlighting
-# Theme can be customised by setting the `highlight_theme` variable to a theme supported by Zola
-highlight_code = false
+# Enable code highlighting for future code snippets
+highlight_code = true
+highlight_theme = "base16-ocean-dark"
 
 [extra]
-# Put all your custom variables here
+# Custom variables can live here
