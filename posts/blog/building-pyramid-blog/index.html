@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pyramid으로 정적 블로그 만들기 — devtemp.xyz</title>
+  <link rel="stylesheet" href="/static/css/main.css">
+  <link rel="stylesheet" href="/static/css/typography.css">
+  <link rel="stylesheet" href="/static/css/syntax.css">
+</head>
+<body>
+  <header class="site-header">
+  <div class="container">
+    <a href="/" class="site-title">devtemp.xyz</a>
+    <nav class="site-nav">
+      <a href="/">글 목록</a>
+    </nav>
+  </div>
+</header>
+  <main class="container">
+    
+
+
+<article class="post">
+  <header class="post__header">
+    <h1 class="post__title">Pyramid으로 정적 블로그 만들기</h1>
+    <div class="post__meta">
+      <time datetime="2026-04-14">2026-04-14</time>
+      <span class="post__author">by Dongyoon Lee</span>
+      
+      <ul class="tag-list">
+        
+        <li class="tag"><a href="/tags/python">#python</a></li>
+        
+        <li class="tag"><a href="/tags/pyramid">#pyramid</a></li>
+        
+        <li class="tag"><a href="/tags/github-pages">#github-pages</a></li>
+        
+        <li class="tag"><a href="/tags/claude-code">#claude-code</a></li>
+        
+        <li class="tag"><a href="/tags/static-site">#static-site</a></li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="post__content">
+    <h2>스택</h2>
+<ul>
+<li>Python 3.11, Pyramid 2.0</li>
+<li>mistune 3 + Pygments (마크다운 렌더링, 코드 하이라이팅)</li>
+<li>Jinja2 (템플릿)</li>
+<li>GitHub Pages (<code>docs/</code> 정적 배포)</li>
+</ul>
+<h2>만든 것들</h2>
+<ul>
+<li><strong>포스트 모듈</strong> — TOML frontmatter 파서, 마크다운 렌더러, draft 필터링</li>
+<li><strong>템플릿 &amp; CSS</strong> — Jinja2 레이아웃, CSS 변수 테마, draft 배너</li>
+<li><strong>라우트 &amp; 뷰</strong> — 홈 목록 + 개별 포스트, 정적 파일 서빙</li>
+<li><strong>정적 빌더</strong> — published 포스트 → <code>docs/</code> HTML</li>
+<li><strong>포트 환경변수</strong> — <code>PORT</code> 환경변수, 기본값 3000</li>
+</ul>
+<h2>Claude Code 워크플로우</h2>
+<p><code>tasks/</code> 디렉토리에 할 일을 파일로 관리하고, <code>/process-tasks</code> 스킬로 순서대로 처리하도록 함.</p>
+<div class="highlight"><pre><span></span>07-todo-*.md  →  07-wip-*.md  →  07-done-*.md
+</pre></div>
+<ul>
+<li><strong>개발자모드 에이전트</strong> — 구현 코드 수정 담당</li>
+<li><strong>테스트모드 에이전트</strong> — 검증 및 버그 피드백 담당</li>
+<li>버그 발견 시 개발자 → 테스터 루프 반복</li>
+</ul>
+
+  </div>
+</article>
+
+  </main>
+  <footer class="site-footer">
+  <div class="container">
+    <p>&copy; 2026 devtemp.xyz</p>
+  </div>
+</footer>
+</body>
+</html>
