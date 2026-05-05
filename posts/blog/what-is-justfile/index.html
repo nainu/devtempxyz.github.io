@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Justfile 이란? — devtemp.xyz</title>
+  <link rel="stylesheet" href="/static/css/main.css">
+  <link rel="stylesheet" href="/static/css/typography.css">
+  <link rel="stylesheet" href="/static/css/syntax.css">
+</head>
+<body>
+  <header class="site-header">
+  <div class="container">
+    <a href="/" class="site-title">devtemp.xyz</a>
+    <nav class="site-nav">
+      <a href="/">글 목록</a>
+    </nav>
+  </div>
+</header>
+  <main class="container">
+    
+
+
+<article class="post">
+  <header class="post__header">
+    <h1 class="post__title">Justfile 이란?</h1>
+    <div class="post__meta">
+      <time datetime="2026-04-15">2026-04-15</time>
+      <span class="post__author">by Dongyoon Lee</span>
+      
+      <ul class="tag-list">
+        
+        <li class="tag"><a href="/tags/just">#just</a></li>
+        
+        <li class="tag"><a href="/tags/justfile">#justfile</a></li>
+        
+        <li class="tag"><a href="/tags/devtools">#devtools</a></li>
+        
+        <li class="tag"><a href="/tags/cli">#cli</a></li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="post__content">
+    <h2>just란?</h2>
+<p><code>just</code>는 프로젝트별 커맨드를 모아두는 <strong>커맨드 러너(task runner)</strong>다. 자주 쓰는 명령어들을 <code>justfile</code>이라는 파일에 레시피(recipe)로 정의해두면, <code>just &lt;레시피명&gt;</code>으로 간단하게 실행할 수 있다.</p>
+<div class="highlight"><pre><span></span>just<span class="w"> </span>serve<span class="w">    </span><span class="c1"># 개발 서버 실행</span>
+just<span class="w"> </span><span class="nb">test</span><span class="w">     </span><span class="c1"># 테스트 실행</span>
+just<span class="w"> </span>build<span class="w">    </span><span class="c1"># 빌드</span>
+</pre></div>
+<h2>make와 뭐가 다른가?</h2>
+<p><code>make</code>와 개념은 비슷하지만 몇 가지 차이가 있다.</p>
+<ul>
+<li><code>make</code>는 원래 C 빌드 도구라 파일 의존성, 타임스탬프 기반 캐싱 등 빌드에 특화된 동작이 기본 내장되어 있다.</li>
+<li>들여쓰기를 반드시 탭(tab)으로 해야 하는 등 quirk가 있어 초심자가 실수하기 쉽다.</li>
+<li><code>just</code>는 커맨드 실행에만 집중한다. 빌드 캐싱 같은 건 없고, 레시피를 정의하고 실행하는 것이 전부다.</li>
+<li>스페이스 들여쓰기도 OK, 에러 메시지도 친절하고, 기본 셸 동작이 예측 가능하다.</li>
+</ul>
+<h2>Justfile 예시</h2>
+<p>이 블로그 프로젝트에서 사용 중인 <code>justfile</code>이다.</p>
+<div class="highlight"><pre><span></span>python := &quot;python&quot;
+port := &quot;3000&quot;
+
+# 의존성 설치
+install:
+    {{python}} -m pip install setuptools
+    {{python}} -m pip install -e &quot;.[dev]&quot;
+
+# 로컬 개발 서버
+serve:
+    PORT={{port}} {{python}} -m pyramid_app
+
+# 정적 HTML 빌드
+build:
+    {{python}} -m pyramid_app.builder
+
+# 테스트 실행
+test:
+    {{python}} -m pytest tests/
+
+# lint + type-check + test 통합 실행
+check: lint type-check test
+</pre></div>
+<p>변수를 선언할 수 있고(<code>python := &quot;python&quot;</code>), 레시피 간 의존성도 지정할 수 있다(<code>check: lint type-check test</code>).</p>
+<h2>설치</h2>
+<div class="highlight"><pre><span></span><span class="c1"># macOS (Homebrew)</span>
+brew<span class="w"> </span>install<span class="w"> </span>just
+
+<span class="c1"># cargo</span>
+cargo<span class="w"> </span>install<span class="w"> </span>just
+</pre></div>
+<h2>링크</h2>
+<ul>
+<li>GitHub: <a href="https://github.com/casey/just">casey/just</a></li>
+<li>공식 문서: <a href="https://just.systems/man/en/">just.systems/man/en</a></li>
+</ul>
+
+  </div>
+</article>
+
+  </main>
+  <footer class="site-footer">
+  <div class="container">
+    <p>&copy; 2026 devtemp.xyz</p>
+  </div>
+</footer>
+</body>
+</html>

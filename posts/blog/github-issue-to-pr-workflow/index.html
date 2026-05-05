@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GitHub Issues → PR 워크플로우 — devtemp.xyz</title>
+  <link rel="stylesheet" href="/static/css/main.css">
+  <link rel="stylesheet" href="/static/css/typography.css">
+  <link rel="stylesheet" href="/static/css/syntax.css">
+</head>
+<body>
+  <header class="site-header">
+  <div class="container">
+    <a href="/" class="site-title">devtemp.xyz</a>
+    <nav class="site-nav">
+      <a href="/">글 목록</a>
+    </nav>
+  </div>
+</header>
+  <main class="container">
+    
+
+
+<article class="post">
+  <header class="post__header">
+    <h1 class="post__title">GitHub Issues → PR 워크플로우</h1>
+    <div class="post__meta">
+      <time datetime="2026-04-15">2026-04-15</time>
+      <span class="post__author">by Dongyoon Lee</span>
+      
+      <ul class="tag-list">
+        
+        <li class="tag"><a href="/tags/github">#github</a></li>
+        
+        <li class="tag"><a href="/tags/gh-cli">#gh-cli</a></li>
+        
+        <li class="tag"><a href="/tags/workflow">#workflow</a></li>
+        
+        <li class="tag"><a href="/tags/git">#git</a></li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="post__content">
+    <h2>전체 흐름</h2>
+<div class="highlight"><pre><span></span>이슈 생성 (draft 라벨)
+    ↓
+draft 라벨 제거 (작업 가능 상태)
+    ↓
+작업할 이슈 선택 → wip 라벨 추가
+    ↓
+브랜치 생성 (issue/&lt;번호&gt;-&lt;slug&gt;)
+    ↓
+구현
+    ↓
+PR 생성 (Closes #&lt;번호&gt;)
+    ↓
+머지 → 이슈 자동 close
+</pre></div>
+<h2>1. 이슈 생성</h2>
+<p>이슈를 만들 때는 항상 <code>--label draft</code>를 붙인다. 아직 준비가 안 된 상태라는 표시다.</p>
+<div class="highlight"><pre><span></span>gh<span class="w"> </span>issue<span class="w"> </span>create<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--title<span class="w"> </span><span class="s2">&quot;포스트: Justfile 소개 글 작성&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--body<span class="w"> </span><span class="s2">&quot;Justfile이 무엇인지 요약하는 블로그 포스트를 작성한다.&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--label<span class="w"> </span>draft
+</pre></div>
+<p><code>draft</code> 라벨은 사람이 직접 제거한다. 제거되면 작업 가능 상태가 된다.</p>
+<h2>2. 작업 가능한 이슈 찾기</h2>
+<p><code>draft</code>도 <code>wip</code>도 없는 open 이슈가 작업 대상이다.</p>
+<div class="highlight"><pre><span></span>gh<span class="w"> </span>issue<span class="w"> </span>list<span class="w"> </span>--search<span class="w"> </span><span class="s2">&quot;-label:draft -label:wip&quot;</span>
+</pre></div>
+<h2>3. 작업 시작</h2>
+<p>이슈를 골랐으면 <code>wip</code> 라벨을 붙이고 브랜치를 만든다.</p>
+<div class="highlight"><pre><span></span><span class="c1"># wip 라벨 추가</span>
+gh<span class="w"> </span>issue<span class="w"> </span>edit<span class="w"> </span><span class="m">18</span><span class="w"> </span>--add-label<span class="w"> </span>wip
+
+<span class="c1"># main 최신화 후 브랜치 생성</span>
+git<span class="w"> </span>pull
+git<span class="w"> </span>checkout<span class="w"> </span>-b<span class="w"> </span>issue/18-add-justfile-post
+</pre></div>
+<p>브랜치명은 <code>issue/&lt;번호&gt;-&lt;slug&gt;</code> 형식을 따른다.</p>
+<h2>4. 라벨 상태 정리</h2>
+<table>
+<thead>
+<tr>
+  <th>라벨</th>
+  <th>의미</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>draft</code></td>
+  <td>생성됐지만 아직 준비 안 됨 (사람이 직접 제거)</td>
+</tr>
+<tr>
+  <td>(없음)</td>
+  <td>작업 가능 상태</td>
+</tr>
+<tr>
+  <td><code>wip</code></td>
+  <td>현재 작업 중</td>
+</tr>
+</tbody>
+</table>
+<h2>5. PR 생성</h2>
+<p>구현이 끝나면 원격에 푸시하고 PR을 만든다.</p>
+<div class="highlight"><pre><span></span>git<span class="w"> </span>push<span class="w"> </span>-u<span class="w"> </span>origin<span class="w"> </span>issue/18-add-justfile-post
+
+gh<span class="w"> </span>pr<span class="w"> </span>create<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--title<span class="w"> </span><span class="s2">&quot;포스트: Justfile 소개 글 작성&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--body<span class="w"> </span><span class="s2">&quot;Justfile이 무엇인지 요약하는 블로그 포스트를 추가합니다.</span>
+
+<span class="s2">Closes #18&quot;</span>
+</pre></div>
+<p>body에 <code>Closes #&lt;번호&gt;</code>를 넣으면 PR이 머지될 때 이슈가 자동으로 close된다.</p>
+<h2>왜 이렇게 하나?</h2>
+<ul>
+<li><code>draft</code> 라벨로 아직 논의 중인 이슈와 실행 가능한 이슈를 분리할 수 있다.</li>
+<li><code>wip</code> 라벨로 누가 어떤 이슈를 진행 중인지 한눈에 파악된다.</li>
+<li>main 직접 push를 막고 PR을 통해서만 머지하면, 코드 리뷰 기회가 생기고 실수를 줄일 수 있다.</li>
+<li><code>Closes #&lt;번호&gt;</code> 연결로 PR과 이슈 추적이 자동화된다.</li>
+</ul>
+
+  </div>
+</article>
+
+  </main>
+  <footer class="site-footer">
+  <div class="container">
+    <p>&copy; 2026 devtemp.xyz</p>
+  </div>
+</footer>
+</body>
+</html>
